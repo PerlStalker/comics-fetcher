@@ -1,0 +1,239 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+use FindBin;
+
+use lib ("$FindBin::Bin/../lib", "FindBin::Bin/../lib/perl5");
+
+use Config::IniFiles;
+use Log::Dispatch;
+use Log::Dispatch::Screen;
+use Log::Dispatch::Syslog;
+use Try::Tiny;
+use XML::FeedPP;
+use Data::Dumper;
+use Time::Local;
+use DateTime;
+use Template;
+
+use Comics::Fetcher;
+
+my @conf_files = (
+    "$ENV{HOME}/comics.conf",
+    "$FindBin::Bin/comics.conf",
+    "$FindBin::Bin/../comics.conf",
+    "$FindBin::Bin/../etc/comics.conf",
+    "/etc/comics.conf",
+    );
+
+my $conf_file;
+foreach my $file (@conf_files) {
+    if (-r $file) {
+	$conf_file = $file;
+	last;
+    }
+}
+
+my $config = Config::IniFiles->new(
+    '-file' => $conf_file,
+    );
+
+my @outputs = (
+    [
+     'Syslog',
+     min_level => $config->val('_config', 'debug')? 'debug' : 'warn',
+     ident     => 'comics',
+    ]
+    );
+
+if ($config->val('_config', 'debug')) {
+    push @outputs, [
+	'Screen', min_level => 'debug',
+    ];
+}
+
+my $log = Log::Dispatch->new();
+if ($config->val('_config', 'debug')) {
+    $log->add(
+	Log::Dispatch::Screen->new(name => 'screen', min_level => 'debug')
+	);
+}
+
+$log->add(
+  Log::Dispatch::Syslog->new(
+      name => 'Syslog',
+      min_level => $config->val('_config', 'debug')? 'debug' : 'warning',
+      ident     => 'comics',
+    )
+    );
+
+my $fetcher = Comics::Fetcher->new(config => $config, log => $log);
+
+my @comics = $config->Sections;
+if (@ARGV) {
+    @comics = @ARGV;
+}
+
+my %fetched = ();
+
+foreach my $comic (@comics) {
+    next if $comic =~ /^_/;
+    next if not $config->val($comic, 'enabled');
+
+    my $method = 'generic';
+
+    if ($config->val($comic, 'plugin')) {
+	$fetcher->load_plugin($config->val($comic, 'plugin'));
+	$method = lc $config->val($comic, 'plugin');
+    }
+
+    try {
+	$fetched{$comic} = $fetcher->$method(name => $comic);
+	$fetched{$comic}{images} = [];
+    }
+    catch {
+	$log->warning("Unable to fetch image for $comic: $_");
+    };
+
+    next if not $fetched{$comic};
+
+    ## Get all cached images for this comic
+    my $image_dir = $config->val('_config', 'image_dir');
+    my @images = ();
+    my @titles = ();
+
+    if (opendir (IMAGES, $image_dir)) {
+	foreach my $file (readdir(IMAGES)) {
+	    if ($file =~ /^$comic(\d+).(gif|jpe?g|png)/i) {
+		push @images, $file;
+		if (-e $config->val('_config', 'image_dir')."/$comic$1.title") {
+		    try {
+			open (my $title_file, '<', $config->val('_config', 'image_dir')."$comic$1.title");
+			push @titles, join ' ', <$title_file>;
+			close $title_file;
+		    }
+		    catch {
+			$log->warning("Unable to read title file: $_\n");
+			push @titles, '';
+		    }
+		}
+		else {
+		    push @titles, '';
+		}
+	    }
+	}
+	#@images = sort { $b cmp $a; } grep !/\.title$/, grep /^$comic/, readdir(IMAGES);
+	closedir (IMAGES);
+    } else {
+	die "Can't open image_dir: $!\n";
+    }
+
+    ## Delete old files
+    if ($#images >= 10) {
+	foreach my $idx (10 .. $#images) {
+	    unlink "$image_dir/$images[$idx]" or warn "Can't delete $images[$idx]: $!\n";
+	    $images[$idx] = undef;
+	}
+    }
+
+    if ($#titles >= 10) {
+	foreach my $idx (10 .. $#titles) {
+	    unlink "$image_dir/$titles[$idx]" or warn "Can't delete $titles[$idx]: $!\n";
+	    $titles[$idx] = undef;
+	}
+    }
+
+    $fetched{$comic}{images} = [ @images ];
+    $fetched{$comic}{titles} = [ @titles ];
+    $log->debug(Dumper $fetched{$comic});
+}
+
+## generate RSS
+foreach my $comic (sort keys %fetched) {
+    my $feed = new XML::FeedPP::RSS;
+    $feed->title($config->val($comic, 'title'));
+    $feed->link($config->val($comic, 'page'));
+    $feed->pubDate(time());
+
+    foreach my $idx (0 .. $#{ $fetched{$comic}{images} }) {
+    #foreach my $image (@{ $fetched{$comic}{images} }) {
+	my $image = $fetched{$comic}{images}[$idx];
+	next if not $image;
+	my $item = $feed->add_item($fetched{$comic}{url});
+	$image =~ /(\d{4})(\d{2})(\d{2})\.\w+$/;
+	$item->title($config->val($comic, 'title') . " $1/$2/$3");
+	#print "$image: $1, $2, $3";
+	$item->pubDate(timelocal(0,0,0,$3,$2-1,$1));
+	#print "$image\n";
+	my $img_file = $image;
+	$img_file =~ s!^.*/([^/]+)$!$1!;
+
+	my $html = "<a href='".$config->val($comic, 'page')."'>";
+	$html .= "<img src='".$config->val('_config', 'image_path')."/$img_file' border='0'/>";
+	$html .= '</a>';
+	if ($fetched{$comic}{titles}[$idx]) {
+	    $html .= '<br />'.$fetched{$comic}{titles}[$idx];
+	}
+	$item->description($html);
+    }
+
+    $feed->to_file($config->val('_config', 'feed_dir')."/$comic.rss");
+}
+
+## generate daily comic page
+my %template_vars = (
+    date => DateTime->now(time_zone => $config->val('_config', 'timezone') || 'UTC'),
+    comics => \%fetched,
+    config => $config,
+    base_uri => $config->val('_config', 'base_uri') || $config->val('_config', 'feed_uri'),,
+    image_path => $config->val('_config', 'image_path'),
+    );
+
+my %tt_config = (
+    OUTPUT_PATH => $config->val('_config', 'feed_dir'),
+    );
+if ($config->val('_template', 'include_path')) {
+    $tt_config{INCLUDE_PATH} = $config->val('_template', 'include_path');
+}
+
+my $tt = Template->new(\%tt_config);
+
+my $template;
+if ($config->val('_template', 'template')) {
+    $template = $config->val('_template', 'template');
+}
+else {
+    $template = \*DATA;
+}
+
+$tt->process(
+    #\*DATA,  # eventually replace with file in config and default to \*DATA
+    $template,
+    \%template_vars,
+    'index.html',
+)
+    or die "Can't process template: ".$tt->error."\n";
+
+__DATA__
+<html>
+ <head>
+  <title>Comics for [% date.ymd('/') %]</title>
+ </head>
+ <body>
+  [% FOREACH comic = comics.keys.sort %]
+   <p>
+    <a href="[% base_uri %]/[% comic %].rss">
+     <img src="[% image_path %]/Feed-icon.gif" border="0" />
+    </a>
+    <b>[% config.val(comic, 'title') %]</b> by [% config.val(comic, 'author') %]<br />
+    <a href="[% config.val(comic, 'page') %]">
+     <img src="[% image_path %]/[% comics.$comic.images.0 %]" border="0"/>
+    </a>
+    [% IF comics.$comic.titles.0 %]
+     <br />[% comics.$comic.titles.0 %]
+    [% END %]
+   </p>
+  [% END %]
+ </body>
+</html>
