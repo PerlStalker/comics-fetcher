@@ -9,6 +9,8 @@ use Try::Tiny;
 
 with 'MooseX::Object::Pluggable';
 
+our $VERSION = '0.01';
+
 has 'feed_dir' => (
     documentation => 'Directory to save generated pages and feeds',
     is            => 'rw',
@@ -91,6 +93,7 @@ method _build_image_dir {
 
 method _build_ua {
     my $ua = LWP::UserAgent->new;
+    $ua->agent($self->config->val('_config', 'agent') || "fetcher/$VERSION");
     # TODO: set useragent, etc.
     return $ua;
 }

@@ -104,7 +104,7 @@ foreach my $comic (@comics) {
     my @titles = ();
 
     if (opendir (IMAGES, $image_dir)) {
-	foreach my $file (readdir(IMAGES)) {
+	foreach my $file (sort { $b cmp $a; } readdir(IMAGES)) {
 	    if ($file =~ /^$comic(\d+).(gif|jpe?g|png)/i) {
 		push @images, $file;
 		if (-e $config->val('_config', 'image_dir')."/$comic$1.title") {
