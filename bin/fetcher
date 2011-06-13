@@ -20,6 +20,11 @@ use Template;
 use Comics::Fetcher;
 
 my @conf_files = (
+    "$ENV{HOME}/fetcher.conf",
+    "$FindBin::Bin/fetcher.conf",
+    "$FindBin::Bin/../fetcher.conf",
+    "$FindBin::Bin/../etc/fetcher.conf",
+    "/etc/fetcher.conf",
     "$ENV{HOME}/comics.conf",
     "$FindBin::Bin/comics.conf",
     "$FindBin::Bin/../comics.conf",
@@ -214,6 +219,23 @@ $tt->process(
     'index.html',
 )
     or die "Can't process template: ".$tt->error."\n";
+
+exit;
+
+__END__
+
+=head1 NAME
+
+fetcher - Daily image fetcher
+
+=head1 SYNOPSIS
+
+ fetcher
+
+=head1 CONFIGURATION
+
+The configuration file is named F<fetcher.conf> and can be located in
+F<./>, F<../>, F<../etc/> or F</etc/>.
 
 __DATA__
 <html>
