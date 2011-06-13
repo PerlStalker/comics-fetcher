@@ -6,6 +6,7 @@ use Module::Build;
 
 my $build = Module::Build->new(
     module_name => 'Comics::Fetcher',
+    dist_abstract => 'Daily image fetcher',
     license     => 'perl',
     required    => {
 	'perl'                       => '5.10.0',
