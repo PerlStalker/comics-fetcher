@@ -1,0 +1,430 @@
+[_config]
+feed_dir = /path/to/htdocs/comicst/
+base_uri = http://example.com/comics
+image_dir = /path/to/htdocs/comics/images/
+# No trailing /
+image_path = /comics-test/images
+timezone = America/Denver
+#debug = 1
+
+[_template]
+template = 
+include_path =
+
+[arlonjanis]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/arloandjanis/
+title = Arlo & Janis
+author = Jimmy Johnson
+img_ext = gif
+
+[atland]
+enabled=1
+page = http://www.realmofatland.com/index.php
+title = Atland
+author = Nate Piekos
+img_host = http://www.realmofatland.com/
+img_pattern = images/strips/atland\d+.jpg
+
+[bc]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/bc/
+title = B.C.
+author = Johnny Hart
+img_ext = gif
+
+[babyblues]
+enabled = 1
+page = http://www.babyblues.com/
+title = Baby Blues
+author = Jerry Scott & Rick Kirkman
+img_host = http://cserver.king-online.com
+img_uri = sprintf("/content/Baby_Blues?date=%04d-%02d-%02d", $date->year, $date->month, $date->day)
+img_ext = gif
+
+[bornloser]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/the-born-loser/
+title = The Born Loser
+author = Chip Sansom
+img_ext = gif
+
+[calvinandhobbes]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/calvinandhobbes/
+title = Calvin and Hobbes
+author = Bill Watterson
+img_ext = gif
+
+[chucklebros]
+enabled = 1
+page = http://www.creators.com/comics/chuckle-bros.html
+title = Chuckle Bros
+author = Brian and Ron Boychuk
+img_host = http://www.creators.com
+img_pattern = /comics/\d+/\d+_thumb\.(gif|jpg)
+
+[diamondlil]
+enabled = 1
+page = http://www.creators.com/comics/diamond-lil.html
+title = Diamond Lil
+author = Brett Koth
+img_host = http://www.creators.com
+img_pattern = /comics/\d+/\d+_thumb\.(gif|jpg)
+
+[dilbert]
+enabled = 0
+page = http://www.dilbert.com/
+title = Dilbert
+author = Scott Adams
+img_host = http://www.comics.com
+img_pattern = /comics/dilbert/archive/images/dilbert\d*.(gif|jpg)
+
+[drabble]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/drabble/
+title = Drabble
+author = Kevin Fagan
+
+[foxtrot]
+enabled = 0
+page = http://www.foxtrot.com/
+title = FoxTrot
+author = Bill Amend
+img_host = http://images.ucomics.com
+img_pattern = /comics/ft/\d+/ft\d+.(gif|jpg)
+
+[franknernest]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/frankandernest/
+title = Frank & Ernest
+author = Bob Thaves
+img_ext = gif
+
+[freerange]
+enabled = 1
+page = http://www.creators.com/comics/free-range.html
+title = Free Range
+author = Bill Whitehead
+img_host = http://www.creators.com
+img_pattern = /comics/\d+/\d+_thumb\.(gif|jpg)
+
+[garfield]
+enabled = 1
+page = http://www.garfield.com/comics/comics_todays.html
+title = Garfield
+author = Jim Davis
+img_host = http://images.ucomics.com
+img_uri = sprintf('/comics/ga/%4d/ga%02d%02d%02d.%s', $date->year, $date->strftime("%g"), $date->month, $date->day, $date->day_of_week == 7 ? 'jpg' : 'gif')
+
+[girlgenius]
+enabled = 1
+page = http://www.girlgeniusonline.com/comic.php
+title = Girl Genius
+author = Professors Phil & Kaja Foglio
+img_host = http://www.girlgeniusonline.com
+img_pattern = /ggmain/strips/ggmain\d+.\.(jpg|gif)
+
+[girlsnsports]
+enabled = 0
+page = http://www.creators.com/comics/girls-and-sports.html?comicname=gis
+title = Girls & Sports
+author = Justin Borus and Andy Feinstein
+img_host = http://www.creators.com
+img_pattern = /comics/\d+/\d+_thumb\.(gif|jpg)
+
+[grizzwells]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/thegrizzwells/
+title = The Grizzwells
+author = Bill Schorr
+img_ext = gif
+
+[hagar]
+enabled = 1
+page = http://www.arcamax.com/hagarthehorrible
+title = Hagar the Horrible
+author = Chris Browne 
+# http://www.arcamax.com/newspics/10/1050/105007.gif
+img_host = http://www.arcamax.com/
+img_pattern = /newspics/\d+/\d+/\d+
+img_ext = gif
+
+[herman]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/herman/
+title = Herman
+author = Jim Unger
+img_ext = gif
+
+[hopedeath]
+enabled = 1
+page = http://www.creators.com/comics/hope-and-death.html
+title = Hope & Death
+author = Gabriel, Mallinson & Metlen
+img_host = http://www.creators.com
+img_pattern = /comics/\d+/\d+_thumb\.(gif|jpg)
+
+[inkpen]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/inkpen/
+title = Ink Pen
+author = Phil Dunlap
+
+[monty]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/monty/
+title = Monty
+author = Jim Meddick
+img_ext = gif
+
+[nonsequitur]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/nonsequitur/
+title = Non Sequitur
+author = Wiley Miller
+img_ext = gif
+
+[othercoast]
+enabled = 1
+page = http://www.creators.com/comics/the-other-coast.html
+title = The Other Coast
+author = Adrian Raeside
+img_host = http://www.creators.com
+img_pattern = /comics/\d+/\d+_thumb\.(gif|jpg)
+
+[offthemark]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/offthemark/
+title = Off the Mark
+author = Mark Parisi
+img_ext = gif
+
+[overthehedge]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/overthehedge/
+title = Over the Hedge
+author = Michael Fry and T Lewis
+img_ext = gif
+
+[pcnpixel]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/pcandpixel/
+title = PC and Pixel
+author = Thach Bui
+img_ext = gif
+
+[peanuts]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/peanuts/
+title = Peanuts
+author = Charles M. Shultz
+img_ext = gif
+
+[pearlsbeforeswine]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/pearlsbeforeswine/
+title = Pearls Before Swine
+author = Stephan Pastis
+img_ext = gif
+
+[pennyarcade]
+enabled = 1
+page = http://www.penny-arcade.com/comic
+title = Penny Arcade
+author = Penny Arcade
+img_host = http://art.penny-arcade.com
+img_pattern = /photos/.*\.jpg
+
+
+[pvp]
+enabled = 1
+page = http://www.pvponline.com/
+title = PvP
+author = Scott R. Kurtz
+img_host = http://www.pvponline.com
+img_pattern = /comics/pvp\d+.(gif|jpg|png)
+
+[realitycheck]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/realitycheck/
+title = Reality Check
+author = Dave Whamond
+img_ext = gif
+
+[roseisrose]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/roseisrose/
+title = Rose is Rose
+author = Pat Brady
+img_ext = gif
+
+[schlockmercenary]
+enabled = 0
+page = http://www.schlockmercenary.com/
+title = Schlock Mercenary
+img_host = http://www.schlockmercenary.com
+img_pattern = /comics/schlock\d+.png
+
+[slagoon]
+enabled = 1
+page = http://www.slagoon.com/cgi-bin/sviewer.pl
+title = Sherman&quot;s Lagoon
+author = Jim Toomy
+img_host = http://www.slagoon.com/
+img_pattern = dailies/SL\d*.gif
+
+[soup2nutz]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/soup-to-nutz/
+title = Soup to Nutz
+author = Rick Stromoski
+img_ext = gif
+
+[strangebrew]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/strangebrew/
+title = Strage Brew
+author = John Deering
+img_ext = gif
+
+[userfriendly]
+enabled = 1
+page = http://www.userfriendly.org/static/
+title = UserFriendly
+author = Illiad
+img_host = http://www.userfriendly.org
+img_pattern = /cartoons/archives/\d+\D+/xuf\d*.gif
+
+[wizardofid]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/wizardofid/
+title = Wizard of Id
+author = Brant Parker
+img_ext = gif
+
+[workingdaze]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/working-daze/
+title = Working Daze
+author = John Zakour and Kyle Miller
+img_ext = gif
+
+[ziggy]
+enabled = 0
+plugin = GoComics
+page = http://www.gocomics.com/ziggy/
+title = Ziggy
+author = Tom Wilson and Tom II
+
+[xkcd]
+enabled = 1
+page = http://xkcd.com/
+title = XKCD
+author = Randall Munroe
+img_host = http://imgs.xkcd.com
+img_pattern = /comics/.*?.png
+get_title = 1
+
+# Editorials
+[chuckasay]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/chuckasay
+title = Chuck Asay
+author = Chuck Asay
+
+[clayjones]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/clayjones/
+title = Clay Jones
+author = Clay Jones
+
+[drewlitton]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/drewlitton
+title = Win, Lose or Drew
+author = Drew Litton
+
+[kencatalino]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/kencatalino/
+title = Ken Catalino
+author = Ken Catalino
+
+[holbert]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/jerryholbert
+title = Jerry Holbert
+author = Jerry Holbert
+
+[hulme]
+enabled = 0
+page = http://www.comics.com/editoons/hulme/index.html
+title = Etta Hulme
+author = Etta Hulme
+img_host = http://www.comics.com
+img_pattern = /editoons/hulme/archive/images/hulme\d+.(gif|jpg)
+
+[ramirez]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/michaelramirez
+title = Michael Ramirez
+author = Michael Ramirez
+
+[schorr]
+enabled = 0
+page = http://www.comics.com/editoons/schorr/index.html
+title = Bill Schorr
+author = Bill Schorr
+img_host = http://www.comics.com
+img_pattern = /editoons/schorr/archive/images/schorr\d+.(gif|jpg)
+
+[stahler]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/jeffstahler/
+title = Jeff Stahler
+author = Jeff Stahler
+img_ext = gif
+
+[edstein]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/ed-stein
+title = Ed Stein
+author = Ed Stein
+
+[stevesack]
+enabled = 1
+plugin = GoComics
+page = http://www.gocomics.com/stevesack
+title = Steve Sack
+author = Steve Sack
