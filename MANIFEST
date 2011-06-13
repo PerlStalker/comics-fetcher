@@ -1,0 +1,7 @@
+bin/fetcher
+Build.PL
+fetcher.conf-example
+lib/Comics/Fetcher.pm
+lib/Comics/Fetcher/Plugin/GoComics.pm
+MANIFEST			This list of files
+MANIFEST.SKIP
