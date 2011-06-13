@@ -222,7 +222,7 @@ $tt->process(
 
 exit;
 
-__END__
+=pod
 
 =head1 NAME
 
@@ -236,6 +236,10 @@ fetcher - Daily image fetcher
 
 The configuration file is named F<fetcher.conf> and can be located in
 F<./>, F<../>, F<../etc/> or F</etc/>.
+
+An example configuration file can be found at L<http://code.google.com/p/comics-fetcher/source/browse/fetcher.conf-example>.
+
+=cut
 
 __DATA__
 <html>
