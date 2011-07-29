@@ -18,7 +18,7 @@ method gocomics (Str :$name) {
 
     my $img_src = '';
     if ($page->is_success and $content) {
-	if ($content =~ m!<link\s+rel="image_src"\s+href="([^"]+)"!is) {
+	if ($content =~ m!<img.*?class="strip".*?src="([^"]+)"!is) {
 	    $img_src = $1;
 	}
     }
