@@ -9,7 +9,7 @@ use Try::Tiny;
 
 with 'MooseX::Object::Pluggable';
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has 'feed_dir' => (
     documentation => 'Directory to save generated pages and feeds',
