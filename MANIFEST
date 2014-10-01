@@ -5,3 +5,5 @@ lib/Comics/Fetcher.pm
 lib/Comics/Fetcher/Plugin/GoComics.pm
 MANIFEST			This list of files
 MANIFEST.SKIP
+META.yml
+META.json
