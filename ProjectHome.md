@@ -1,0 +1,1 @@
+Fetch comics and other daily updated images from the various sites around the web and display them on a summary page.
