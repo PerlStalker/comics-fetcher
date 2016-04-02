@@ -26,16 +26,17 @@ my $build = Module::Build->new(
 	'Moose'                      => '0',
 	'MooseX::Object::Pluggable'  => '0',
 	'MooseX::Method::Signatures' => '0',
+	'LWP::Protocol::https'       => '0',
     },
     resources => {
-	homepage    => 'http://comics-fetcher.googlecode.com/',
+	homepage    => 'https://github.com/PerlStalker/comics-fetcher',
 	bugtracker  => {
-	    web => 'http://code.google.com/p/comics-fetcher/issues/list',
+	    web => 'https://github.com/PerlStalker/comics-fetcher/issues',
 	},
 	repository  => {
-	    web  => 'http://code.google.com/p/comics-fetcher/source/checkout',
-	    url  => 'https://comics-fetcher.googlecode.com/hg/',
-	    type => 'hg',
+	    web  => 'https://github.com/PerlStalker/comics-fetcher',
+	    url  => 'https://github.com/PerlStalker/comics-fetcher.git',
+	    type => 'git',
 	},
     },
     );
