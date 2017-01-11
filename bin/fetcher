@@ -25,11 +25,13 @@ my @conf_files = (
     "$FindBin::Bin/../fetcher.conf",
     "$FindBin::Bin/../etc/fetcher.conf",
     "/etc/fetcher.conf",
+    "/usr/local/etc/fetcher.conf",
     "$ENV{HOME}/comics.conf",
     "$FindBin::Bin/comics.conf",
     "$FindBin::Bin/../comics.conf",
     "$FindBin::Bin/../etc/comics.conf",
     "/etc/comics.conf",
+    "/usr/local/etc/comics.conf",
     );
 
 my $conf_file;
@@ -202,6 +204,8 @@ my %template_vars = (
     image_path => $config->val('_config', 'image_path'),
     );
 
+#warn "feed_dir: ", $config->val('_config', 'feed_dir');
+#use Data::Dumper; warn Dumper $config;
 my %tt_config = (
     OUTPUT_PATH => $config->val('_config', 'feed_dir'),
     );
