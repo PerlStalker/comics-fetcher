@@ -165,7 +165,14 @@ foreach my $comic (sort keys %fetched) {
     #foreach my $image (@{ $fetched{$comic}{images} }) {
 	my $image = $fetched{$comic}{images}[$idx];
 	next if not $image;
-	my $item = $feed->add_item($fetched{$comic}{url});
+	my $item;
+	eval { 
+	    $item = $feed->add_item($fetched{$comic}{url});
+	};
+	if ($@) {
+	    warn "unable to add comic ($comic): $@\n";
+	    next;
+	}
 	$image =~ /(\d{4})(\d{2})(\d{2})\.\w+$/;
 	$item->title($config->val($comic, 'title') . " $1/$2/$3");
 	#print "$image: $1, $2, $3";
