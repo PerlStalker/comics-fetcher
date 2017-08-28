@@ -9,7 +9,7 @@ use Try::Tiny;
 
 with 'MooseX::Object::Pluggable';
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 has 'feed_dir' => (
     documentation => 'Directory to save generated pages and feeds',
@@ -84,6 +84,7 @@ method _build_base_uri {
 
 method _build_image_dir {
     if ($self->config->val('_config', 'image_dir')) {
+	system('mkdir', '-p', $self->config->val('_config', 'image_dir'));
 	return $self->config->val('_config', 'image_dir');
     }
     else {
