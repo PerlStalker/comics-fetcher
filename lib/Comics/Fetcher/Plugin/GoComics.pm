@@ -3,7 +3,15 @@ use Moose::Role;
 use MooseX::Method::Signatures;
 
 method gocomics (Str :$name) {
-    my $url = URI->new($self->config->val($name, 'page'));
+    my $today_url = sprintf(
+	"%s/%04d/%02d/%02d",
+	$self->config->val($name, 'page'),
+	$self->_date->year,
+	$self->_date->month,
+	$self->_date->day
+	);
+			    
+    my $url = URI->new($today_url);
 
     my $req = HTTP::Request->new;
     $req->method('GET');
